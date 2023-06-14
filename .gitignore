@@ -9,3 +9,5 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 dev.db
+prisma/*.db
+prisma/*.db.journal

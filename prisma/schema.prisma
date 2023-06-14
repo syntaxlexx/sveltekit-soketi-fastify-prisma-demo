@@ -11,24 +11,38 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
   name     String?
   rooms    Room[]
   messages Message[]
+  RoomUser RoomUser[]
 }
 
 model Room {
-  id       Int       @id @default(autoincrement())
-  user     User      @relation(fields: [userId], references: [id])
+  id       Int        @id @default(autoincrement())
   userId   Int
+  user     User       @relation(fields: [userId], references: [id])
+  active   Int        @default(0)
   messages Message[]
+  RoomUser RoomUser[]
+}
+
+// a user can belong to one or more rooms, 
+// a room can have one or more users
+model RoomUser {
+  id       Int     @id @default(autoincrement())
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id])
+  roomId   Int
+  room     Room    @relation(fields: [roomId], references: [id])
+  isActive Boolean @default(false)
 }
 
 model Message {
   id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  room   Room @relation(fields: [roomId], references: [id])
   userId Int
+  user   User @relation(fields: [userId], references: [id])
   roomId Int
+  room   Room @relation(fields: [roomId], references: [id])
 }

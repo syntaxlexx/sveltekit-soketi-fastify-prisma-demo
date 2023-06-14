@@ -3,6 +3,7 @@ import helmet from '@fastify/helmet';
 import { PrismaClient } from '@prisma/client';
 import fastifyEnv from '@fastify/env';
 import cors from '@fastify/cors';
+import Pusher from 'pusher-js';
 
 const fastify = Fastify({
 	logger: true
