@@ -43,6 +43,7 @@
 		"@prisma/client": "4.15.0",
 		"fastify": "^4.18.0",
 		"jsonwebtoken": "^9.0.0",
+		"pusher": "^5.1.3",
 		"pusher-js": "^8.1.0",
 		"string-hash": "^1.1.3",
 		"svelte-modals": "^1.2.1",
