@@ -1,5 +1,4 @@
 <script>
-	import { Title } from '$lib/components';
 </script>
 
-<Title>Admin</Title>
+<h2 class="title">Admin</h2>

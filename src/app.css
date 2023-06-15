@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.title {
+	@apply font-bold text-2xl leading-6 text-gray-800;
+}
+
+.subtitle {
+	@apply font-semibold text-xl text-gray-600;
+}
+
+.card {
+	@apply min-h-[50vh] bg-white rounded-lg border border-gray-200 px-8 py-5;
+}
+
+/* ========== Modal styling == */
+.backdrop {
+	@apply fixed top-0 left-0 right-0 bottom-0 bg-black/50;
+}
+
+.modal {
+	@apply fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center;
+	pointer-events: none;
+}
+.modal .contents {
+	@apply min-w-[250px] lg:min-w-[500px] xl:min-w-[800px] rounded-lg px-8 py-6 bg-white flex flex-col justify-between ;
+	pointer-events: auto;
+}
+.modal .body {
+    @apply mt-6;
+}
+.modal .actions {
+	@apply flex justify-end items-center gap-4 mt-5;
+}
+.modal .floating-close-button {
+    @apply absolute bottom-0 left-0  z-10;
+}

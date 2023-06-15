@@ -1,12 +1,7 @@
 <script>
-	import { Title } from '$lib/components';
 	import { onMount } from 'svelte';
 
-	onMount(async () => {
-		const resp = await fetch('http://localhost:6001/users');
-		const users = await resp.json();
-		console.log('users', users);
-	});
+	onMount(async () => {});
 </script>
 
-<Title>Users</Title>
+<h2 class="title">Users</h2>

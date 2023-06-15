@@ -10,4 +10,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 dev.db
 prisma/*.db
-prisma/*.db.journal
+prisma/*.db-journal

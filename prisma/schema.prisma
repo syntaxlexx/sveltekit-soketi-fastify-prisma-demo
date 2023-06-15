@@ -11,19 +11,27 @@ datasource db {
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  email    String     @unique
-  name     String?
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   rooms    Room[]
   messages Message[]
   RoomUser RoomUser[]
 }
 
 model Room {
-  id       Int        @id @default(autoincrement())
-  userId   Int
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  active    Int      @default(0)
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   user     User       @relation(fields: [userId], references: [id])
-  active   Int        @default(0)
   messages Message[]
   RoomUser RoomUser[]
 }
@@ -31,18 +39,25 @@ model Room {
 // a user can belong to one or more rooms, 
 // a room can have one or more users
 model RoomUser {
-  id       Int     @id @default(autoincrement())
-  userId   Int
-  user     User    @relation(fields: [userId], references: [id])
-  roomId   Int
-  room     Room    @relation(fields: [roomId], references: [id])
-  isActive Boolean @default(false)
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roomId    Int
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
 }
 
 model Message {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
-  roomId Int
-  room   Room @relation(fields: [roomId], references: [id])
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roomId    Int
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  room Room @relation(fields: [roomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }

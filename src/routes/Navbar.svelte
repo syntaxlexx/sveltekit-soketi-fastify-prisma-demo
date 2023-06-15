@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import { Button } from '$lib/components';
 	import { siteInfo } from '$lib/constants';
 
 	type NavItem = {
@@ -25,6 +27,8 @@
 			route: '/admin'
 		}
 	];
+
+	export let auth;
 </script>
 
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
@@ -71,6 +75,18 @@
 							>
 						</li>
 					{/each}
+
+					{#if auth}
+						<li>
+							<form action="/login?/logout" method="POST" use:enhance>
+								<Button type="submit" size="sm" iconSuffix="logout">Logout</Button>
+							</form>
+						</li>
+					{:else}
+						<li>
+							<a href="/login" class="nav-link">Login</a>
+						</li>
+					{/if}
 				</ul>
 			</div>
 		</div>

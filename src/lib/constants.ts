@@ -1,3 +1,3 @@
 export const siteInfo = {
-    siteName: 'Soketi Chat App'
+    siteName: 'Soketi-Fastify Chat App'
 }
