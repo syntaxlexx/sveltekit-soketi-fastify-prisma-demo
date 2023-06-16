@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"server": "nodemon server.js"
+		"backend": "nodemon backend/server.js"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -41,6 +41,7 @@
 		"@fastify/env": "^4.2.0",
 		"@fastify/helmet": "^10.1.1",
 		"@prisma/client": "4.15.0",
+		"dayjs": "^1.11.8",
 		"fastify": "^4.18.0",
 		"jsonwebtoken": "^9.0.0",
 		"pusher": "^5.1.3",

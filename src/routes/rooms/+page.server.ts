@@ -4,9 +4,22 @@ import { returnRespError, returnUnauthenticated } from '$lib/server/helpers';
 import type { Actions } from './$types';
 import z from 'zod'
 
-export async function load() {
+export async function load({ cookies }) {
+
+    const rooms = await prisma.room.findMany({
+        where: {
+            name: {
+                not: 'Public'
+            }
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+
     return {
-        rooms: await getAllRooms()
+        rooms,
+        accessToken: cookies.get('session')
     };
 }
 

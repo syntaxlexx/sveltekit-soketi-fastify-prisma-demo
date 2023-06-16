@@ -4,19 +4,34 @@
 	import Modal from './Modal.svelte';
 	import type { Room } from '@prisma/client';
 	import RoomMessages from './RoomMessages.svelte';
+	import PublicRoomMessages from './PublicRoomMessages.svelte';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data;
 
 	$: rooms = data.rooms;
+	$: accessToken = data.accessToken;
+	$: user = data.user;
 
 	let selectedRoom: Room | null | undefined = undefined;
+	let showPublicRoom = true;
 
 	function createRoom() {
 		openModal(Modal);
 	}
 
 	function handleSelectedRoom(room: Room) {
+		showPublicRoom = false;
 		selectedRoom = room;
+	}
+
+	function publicRoom() {
+		showPublicRoom = true;
+		selectedRoom = null;
+	}
+
+	async function refreshRooms() {
+		await invalidateAll();
 	}
 </script>
 
@@ -24,10 +39,13 @@
 
 <div class="flex flex-wrap mt-8">
 	<div class="w-full lg:w-1/3">
-		<div class="flex justify-between mb-4">
-			<h4 class="subtitle">Available Rooms</h4>
-			<Button icon="add" on:click={createRoom}>Create Room</Button>
+		<div class="mb-4">
+			<div class="flex justify-between">
+				<h4 class="subtitle">Available Rooms</h4>
+				<Icon name="refresh" clickable on:click={refreshRooms} />
+			</div>
 		</div>
+
 		{#if rooms.length < 1}
 			<Empty message="No rooms found" />
 		{:else}
@@ -48,14 +66,23 @@
 	</div>
 
 	<div class="w-full lg:w-2/3">
-		<div class="lg:ml-8 card">
-			{#if selectedRoom}
-				<RoomMessages room={selectedRoom} />
-			{:else}
-				<div class="h-[50vh] w-full flex items-center justify-center">
-					<p>Select a room to proceed</p>
-				</div>
-			{/if}
+		<div class="lg:ml-8">
+			<div class="flex justify-between mb-4">
+				<Button icon="add" on:click={createRoom}>Create Room</Button>
+				<Button icon="chat" on:click={publicRoom}>Go to Public Chatroom</Button>
+			</div>
+
+			<div class="card">
+				{#if showPublicRoom}
+					<PublicRoomMessages {accessToken} {user} />
+				{:else if selectedRoom}
+					<RoomMessages room={selectedRoom} />
+				{:else}
+					<div class="h-[50vh] w-full flex items-center justify-center">
+						<p>Select a room to proceed</p>
+					</div>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>

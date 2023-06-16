@@ -1,5 +1,8 @@
 import { ZodError } from 'zod';
 import { fail } from '@sveltejs/kit';
+import dayjs from 'dayjs';
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 export const customResponse = (status: number, success: boolean, message: string, data?: any) => {
     if (success) {
@@ -36,9 +39,19 @@ export const getValidationErrorMessages = (errors: ZodError | Error | string | s
         return arr;
     }
 
+    console.log("errors", errors);
+
     if (Array.isArray(errors)) {
         const arr: string[] = []
         errors.forEach(e => arr.push(snakeCaseToSentenceCaseCapitalizeWords(e)))
+        return arr;
+    }
+
+    if (typeof errors === 'object') {
+        const arr: string[] = []
+        Object.values(errors).forEach(e => {
+            arr.push(e)
+        })
         return arr;
     }
 
@@ -56,4 +69,28 @@ export const snakeCaseToSentenceCaseCapitalizeWords = (value: string | null) => 
     return value.replace(/\b\w/g, function (l) {
         return l.toUpperCase();
     });
+};
+
+
+/**
+ * return 24-hour time from an  ISO 8601  date
+ * @param date string
+ * @returns string
+ */
+export const getTimeFromDate = (date: string | Date) => {
+    return dayjs(date).format('HH:mm');
+};
+
+
+// date => 2 days ago
+export const fromNow = (date: Date | null | undefined) => {
+	if (!date) return "";
+	return dayjs(date).fromNow(); // { addSuffix: true }
+};
+
+// date => 22nd Jun 2021, 2:00 pm
+// https://day.js.org/docs/en/display/format
+export const dateFormat = (date: Date | null | undefined, dateFormat = "MMM D, YYYY h:mm A") => {
+	if (!date) return "";
+	return dayjs(date).format(dateFormat);
 };

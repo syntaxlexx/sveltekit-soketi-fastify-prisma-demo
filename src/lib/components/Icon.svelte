@@ -12,6 +12,7 @@
 	export let name = 'edit';
 	export let size: IconSize = 'n';
 	export let loading: boolean | undefined = undefined;
+	export let clickable: boolean | undefined = undefined;
 	let computedIcon: string = name;
 
 	$: {
@@ -37,7 +38,12 @@
 	}
 </script>
 
-<i class="mdi {computedIcon} icon-{size}" class:mdi-spin={loading} on:click={handleClick} />
+<i
+	class="mdi {computedIcon} icon-{size}"
+	class:mdi-spin={loading}
+	class:cursor-pointer={clickable}
+	on:click={handleClick}
+/>
 
 <style lang="css">
 	.icon-sm {
