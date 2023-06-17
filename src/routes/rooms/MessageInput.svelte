@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Icon } from '$lib/components';
 	import { createEventDispatcher } from 'svelte';
 
 	export let placeholder = 'Your message';
@@ -12,6 +11,11 @@
 	function handleSubmit() {
 		dispatch('send', model);
 		model = '';
+	}
+
+	const dispatchTyping = createEventDispatcher<{ typing: void }>();
+	function handleTyping() {
+		dispatchTyping('typing');
 	}
 </script>
 
@@ -60,6 +64,7 @@
 			{placeholder}
 			required
 			bind:value={model}
+			on:input={(e) => handleTyping()}
 		/>
 		<button
 			type="submit"

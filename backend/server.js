@@ -356,6 +356,32 @@ fastify.get('/room/:id/latest-messages', async (request, reply) => {
 	return { data };
 });
 
+fastify.get('/room/:id/typing', async (request, reply) => {
+	const accessToken = request.headers[accessTokenHeader];
+	if (!accessToken) {
+		throw formatUnauthenticatedError();
+	}
+	const user = getUserInformation(accessToken);
+	if (!user) {
+		throw formatUnauthenticatedError();
+	}
+
+	const roomId = Number(request.params.id);
+	const isPrivate = Boolean(request.query['is-private']);
+	console.log('isPrivate', isPrivate);
+
+	// alert subs
+	const channelName = isPrivate ? `private-room-${roomId}` : `presence-room-${roomId}`;
+	pusher.trigger(channelName, 'typing', {
+		user: {
+			id: user?.id,
+			name: user?.name
+		}
+	});
+
+	return { success: true };
+});
+
 // pusher authentication
 fastify.post('/pusher/auth', async (request, reply) => {
 	// first verify they are logged in!

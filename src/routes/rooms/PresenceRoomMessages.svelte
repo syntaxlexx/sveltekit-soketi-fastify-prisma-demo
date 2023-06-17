@@ -1,13 +1,14 @@
 <script lang="ts">
 	import type { Message, Room, User } from '@prisma/client';
 	import { onDestroy, onMount } from 'svelte';
-	import { Button, DisplayErrors, Icon } from '$lib/components';
+	import { DisplayErrors, Icon } from '$lib/components';
 	import { initializePusher, type Pusher } from '$lib/pusher-client';
 	import { backendUrl, getBackendHeaders } from '$lib/constants';
 	import { convertToJson, fromNow, listify } from '$lib/helpers';
 	import MessageInput from './MessageInput.svelte';
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import { quadOut } from 'svelte/easing';
+	import { scrollToBottomAction } from 'svelte-legos';
 
 	type Member = {
 		count: number;
@@ -35,6 +36,11 @@
 	let isMounted = false;
 	let isListening = false;
 	let errors = null;
+	let userTyping: string | null = null;
+	let canPublishTimeout: null | NodeJS.Timeout = null;
+	const canPublishTimer = 1500;
+	let typingTimeout: null | NodeJS.Timeout = null;
+	const typingTimer = 3500;
 
 	let messages: Message[] = [];
 	let members: Member = {
@@ -78,7 +84,6 @@
 		channel = pusher?.subscribe(channelName);
 
 		channel?.bind(eventName, (data) => {
-			console.log('new mess', data);
 			messages = [...messages, data.message];
 		});
 
@@ -110,6 +115,16 @@
 				count: members.count - 1,
 				members: newMembers
 			};
+		});
+
+		channel?.bind('typing', (data) => {
+			userTyping = `${data.user.name} is typing...`;
+
+			typingTimeout = setTimeout(() => {
+				userTyping = null;
+
+				if (typingTimeout) clearTimeout(typingTimeout);
+			}, typingTimer);
 		});
 
 		pusher?.connection.bind('connected', () => {
@@ -157,8 +172,26 @@
 	}
 
 	function disconnectPusher() {
-		console.log('disconnecting pusher...');
 		pusher?.unsubscribe(channelName);
+	}
+
+	// show typing. add a simple implementation of debounce
+	let canPublishTyping = true;
+	async function handleTyping() {
+		if (canPublishTyping) {
+			await fetch(`${backendUrl}/room/${room.id}/typing?huhu=jiji`, {
+				method: 'GET',
+				headers: getBackendHeaders(accessToken)
+			});
+
+			canPublishTyping = false;
+
+			canPublishTimeout = setTimeout(() => {
+				canPublishTyping = true;
+
+				if (canPublishTimeout) clearTimeout(canPublishTimeout);
+			}, canPublishTimer);
+		}
 	}
 </script>
 
@@ -181,7 +214,7 @@
 			</div>
 
 			<!-- chat area -->
-			<ul class="relative mt-4">
+			<ul class="h-[35vh] mt-4 overflow-auto pr-3" use:scrollToBottomAction>
 				{#each messages as item}
 					{@const isTheSender = user?.id == item.userId}
 					<li class="mb-2">
@@ -224,7 +257,19 @@
 					class="absolute bottom-0 left-0 right-0"
 					in:slide={{ axis: 'y', duration: 300, easing: quadOut }}
 				>
-					<MessageInput on:send={sendMessage} />
+					<MessageInput on:send={sendMessage} on:typing={handleTyping} />
+				</div>
+			{/if}
+
+			<!-- show typing -->
+			{#if userTyping}
+				<div
+					class="absolute top-[20px] left-0"
+					transition:fade={{ duration: 300, easing: quadOut }}
+				>
+					<span class="italic text-xs text-gray-500 dark:text-gray-400">
+						{userTyping}
+					</span>
 				</div>
 			{/if}
 		</div>
@@ -233,7 +278,7 @@
 		<h5>Members: {members.count}</h5>
 
 		{#if members.count > 0}
-			<ul>
+			<ul class="h-[35vh] mt-4 overflow-auto" use:scrollToBottomAction>
 				{#each members.members as member}
 					<li class="flex gap-2 text-xs">
 						<span class="text-gray-500 dark:text-gray-400">

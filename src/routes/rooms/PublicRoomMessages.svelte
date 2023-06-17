@@ -7,7 +7,8 @@
 	import { slide } from 'svelte/transition';
 	import { quadOut } from 'svelte/easing';
 	import type { Message, User } from '@prisma/client';
-	import { dateFormat, fromNow, isDateToday } from '$lib/helpers';
+	import { dateFormat, isDateToday } from '$lib/helpers';
+	import { scrollToBottomAction } from 'svelte-legos';
 
 	export let accessToken: string | null | undefined;
 	export let user: User | null | undefined;
@@ -101,7 +102,7 @@
 </script>
 
 <div class="card">
-	<div class="relative min-h-[50vh]">
+	<div class="relative h-[50vh] overflow-auto">
 		<div class="flex flex-wrap justify-between gap-4">
 			<h4 class="subtitle">Public Chatroom</h4>
 			<div class="text-sm" class:text-green-500={isConnected} class:text-red-500={!isConnected}>
@@ -113,16 +114,16 @@
 				{/if}
 			</div>
 		</div>
-	
+
 		<!-- chat area -->
-		<ul class="relative mt-4">
+		<ul class="h-[35vh] mt-4 overflow-auto" use:scrollToBottomAction>
 			{#each messages as item}
 				{@const isTheSender = user?.id == item.userId}
 				<li class="mb-1 flex flex-wrap gap-2">
 					<div class="text-sm italic text-gray-500 dark:text-gray-400">
 						{formatTime(item.createdAt)}
 					</div>
-	
+
 					<div
 						class="text-sm italic"
 						class:text-indigo-800={isTheSender}
@@ -138,7 +139,7 @@
 				</li>
 			{/each}
 		</ul>
-	
+
 		{#if errors}
 			<div
 				class="absolute bottom-[40px] left-0 right-0"
@@ -147,7 +148,7 @@
 				<DisplayErrors {errors} />
 			</div>
 		{/if}
-	
+
 		{#if isMounted}
 			<div
 				class="absolute bottom-0 left-0 right-0"

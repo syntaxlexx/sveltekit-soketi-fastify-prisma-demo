@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-div, p {
+div,
+p {
 	@apply text-gray-900 dark:text-gray-100;
 }
 
@@ -28,15 +29,29 @@ div, p {
 	pointer-events: none;
 }
 .modal .contents {
-	@apply min-w-[250px] lg:min-w-[500px] xl:min-w-[800px] rounded-lg px-8 py-6 bg-white dark:bg-gray-800 flex flex-col justify-between ;
+	@apply min-w-[250px] lg:min-w-[500px] xl:min-w-[800px] rounded-lg px-8 py-6 bg-white dark:bg-gray-800 flex flex-col justify-between;
 	pointer-events: auto;
 }
 .modal .body {
-    @apply mt-6;
+	@apply mt-6;
 }
 .modal .actions {
 	@apply flex justify-end items-center gap-4 mt-5;
 }
 .modal .floating-close-button {
-    @apply absolute bottom-0 left-0  z-10;
+	@apply absolute bottom-0 left-0  z-10;
+}
+
+::-webkit-scrollbar {
+	width: 5px;
+}
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+	background: #4c8bf8;
+	border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #357af3;
 }
