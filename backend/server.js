@@ -30,6 +30,14 @@ const formatUnauthenticatedError = () => {
 	return formatRespError({ message: 'You need to be logged in' }, 'Unauthenticated', 401);
 };
 
+const formatUnauthorizedError = () => {
+	return formatRespError(
+		{ message: 'You are not allowed to perform that action' },
+		'Unauthorized',
+		401
+	);
+};
+
 /**
  * throw validation error from zod
  * @param errors array,object,string
@@ -174,7 +182,6 @@ fastify.get('/ping', async (request, reply) => {
 // CRUD
 fastify.get('/users', async (request, reply) => {
 	const users = await prisma.user.findMany();
-	console.log('users', users);
 	return { data: users };
 });
 
@@ -277,9 +284,20 @@ fastify.post('/message', async (request, reply) => {
 		throw formatRespError(validated.error, 'Validation errors');
 	}
 
+	// verify user can post in the room
+	const roomId = validated.data.roomId;
+	const roomUser = await prisma.roomUser.findFirst({
+		where: {
+			userId: user.id,
+			roomId: roomId
+		}
+	});
+
+	if (!roomUser) throw formatUnauthorizedError();
+
 	const room = await prisma.room.findFirst({
 		where: {
-			id: Number(validated.data.roomId)
+			id: roomId
 		}
 	});
 
@@ -287,19 +305,48 @@ fastify.post('/message', async (request, reply) => {
 		throw formatRespError({ message: 'Room not found!' }, null, 404);
 	}
 
-	const message = prisma.message.create({
+	const message = await prisma.message.create({
 		data: {
 			userId: user.id,
 			roomId: room.id,
 			message: validated.data.message
+		},
+		include: {
+			user: {
+				select: {
+					name: true
+				}
+			}
 		}
 	});
 
-	pusher.trigger('chat-room', 'new-message', {
+	pusher.trigger(`private-room-${room.id}`, 'new-message', {
 		message
 	});
 
 	return { success: true, message };
+});
+
+fastify.get('/room/:id/latest-messages', async (request, reply) => {
+	const roomId = Number(request.params.id);
+
+	const data = await prisma.message.findMany({
+		where: {
+			roomId: roomId
+		},
+		include: {
+			user: {
+				select: {
+					name: true
+				}
+			}
+		},
+		orderBy: {
+			createdAt: 'desc'
+		},
+		take: 20
+	});
+	return { data };
 });
 
 // pusher authentication
@@ -318,14 +365,26 @@ fastify.post('/pusher/auth', async (request, reply) => {
 	const socketId = request.body.socket_id;
 	const channel = request.body.channel_name;
 
-	console.log('socketId', socketId);
-	console.log('channel', channel);
-	console.log('accessToken', accessToken);
-
 	// authorize person
 	const authResponse = pusher.authorizeChannel(socketId, channel);
-	console.log('authResponse', authResponse);
-	return authResponse;
+
+	if (channel.startsWith('private-room')) {
+		try {
+			const roomId = Number(channel.split('-').pop());
+			const roomUser = await prisma.roomUser.findFirst({
+				where: {
+					userId: user.id,
+					roomId: roomId
+				}
+			});
+
+			if (roomUser) return authResponse;
+		} catch (error) {
+			return false;
+		}
+	}
+
+	return false;
 });
 
 /**
