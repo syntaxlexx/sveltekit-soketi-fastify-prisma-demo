@@ -2,7 +2,9 @@ import { ZodError } from 'zod';
 import { fail } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
+import isToday from "dayjs/plugin/isToday";
 dayjs.extend(relativeTime);
+dayjs.extend(isToday);
 
 export const customResponse = (status: number, success: boolean, message: string, data?: any) => {
     if (success) {
@@ -84,13 +86,18 @@ export const getTimeFromDate = (date: string | Date) => {
 
 // date => 2 days ago
 export const fromNow = (date: Date | null | undefined) => {
-	if (!date) return "";
-	return dayjs(date).fromNow(); // { addSuffix: true }
+    if (!date) return "";
+    return dayjs(date).fromNow(); // { addSuffix: true }
 };
 
 // date => 22nd Jun 2021, 2:00 pm
 // https://day.js.org/docs/en/display/format
 export const dateFormat = (date: Date | null | undefined, dateFormat = "MMM D, YYYY h:mm A") => {
-	if (!date) return "";
-	return dayjs(date).format(dateFormat);
+    if (!date) return "";
+    return dayjs(date).format(dateFormat);
 };
+
+export const isDateToday = (date: Date | null | undefined) => {
+    if (!date) return false;
+    return dayjs(date).isToday()
+}

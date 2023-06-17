@@ -35,7 +35,15 @@
 	}
 </script>
 
-<h2 class="title">Rooms</h2>
+<div class="flex flex-wrap items-center justify-between gap-5">
+	<h2 class="title">Rooms</h2>
+
+	<div class="flex flex-wrap gap-1">
+		<span>Public Chatroom = <strong>public</strong> channel,</span>
+		<span>Groups = <strong>presence</strong> channel,</span>
+		<span>Private Rooms = <strong>private</strong> channel</span>
+	</div>
+</div>
 
 <div class="flex flex-wrap mt-8">
 	<div class="w-full lg:w-1/3">
@@ -55,7 +63,7 @@
 						<div class="text-gray-500">{i + 1}.</div>
 						<div class="text-lg">{item.name}</div>
 					</div>
-					<div class="text-gray-400">
+					<div class="text-gray-400 dark:text-gray-600">
 						<div class="icon">
 							<Icon name="chevron-right" />
 						</div>
@@ -76,7 +84,7 @@
 				{#if showPublicRoom}
 					<PublicRoomMessages {accessToken} {user} />
 				{:else if selectedRoom}
-					<RoomMessages room={selectedRoom} />
+					<RoomMessages room={selectedRoom} {accessToken} {user} />
 				{:else}
 					<div class="h-[50vh] w-full flex items-center justify-center">
 						<p>Select a room to proceed</p>
@@ -89,7 +97,7 @@
 
 <style lang="css">
 	.room-item {
-		@apply flex items-center justify-between border-b border-gray-200 pb-1 cursor-pointer hover:bg-gray-200 hover:pl-2 transition-all duration-300;
+		@apply flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-1 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 hover:pl-2 transition-all duration-300;
 	}
 	.room-item .icon {
 		@apply opacity-0 pr-5 transition-all duration-300;

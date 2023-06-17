@@ -2,16 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+div, p {
+	@apply text-gray-900 dark:text-gray-100;
+}
+
 .title {
-	@apply font-bold text-2xl leading-6 text-gray-800;
+	@apply font-bold text-2xl leading-6 text-gray-800 dark:text-gray-200;
 }
 
 .subtitle {
-	@apply font-semibold text-xl text-gray-600;
+	@apply font-semibold text-xl text-gray-600 dark:text-gray-400;
 }
 
 .card {
-	@apply min-h-[50vh] bg-white rounded-lg border border-gray-200 px-8 py-5;
+	@apply min-h-[50vh] bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-500 px-8 py-5;
 }
 
 /* ========== Modal styling == */

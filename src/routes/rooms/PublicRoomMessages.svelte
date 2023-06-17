@@ -7,7 +7,7 @@
 	import { slide } from 'svelte/transition';
 	import { quadOut } from 'svelte/easing';
 	import type { Message, User } from '@prisma/client';
-	import { fromNow } from '$lib/helpers';
+	import { dateFormat, fromNow, isDateToday } from '$lib/helpers';
 
 	export let accessToken: string | null | undefined;
 	export let user: User | null | undefined;
@@ -90,6 +90,14 @@
 	function disconnectPusher() {
 		pusher?.unsubscribe(channelName);
 	}
+
+	function formatTime(d: Date | null) {
+		if (isDateToday(d)) {
+			return dateFormat(d, 'hh:mm a');
+		}
+
+		return dateFormat(d, 'DD MMM, hh:mm a');
+	}
 </script>
 
 <div class="relative min-h-[50vh]">
@@ -109,23 +117,22 @@
 	<ul class="relative mt-4">
 		{#each messages as item}
 			{@const isTheSender = user?.id == item.userId}
-			<li class="mb-2">
-				<div class="flex w-full" class:justify-end={isTheSender}>
-					<div
-						class="text-sm px-3 py-2 rounded-lg max-w-[70%]"
-						class:bg-gray-100={isTheSender}
-						class:bg-blue-100={!isTheSender}
-						class:rounded-ee-none={isTheSender}
-						class:rounded-es-none={!isTheSender}
-					>
-						{item.message}
-					</div>
+			<li class="mb-1 flex flex-wrap gap-2">
+				<div class="text-sm italic text-gray-500 dark:text-gray-400">
+					{formatTime(item.createdAt)}
 				</div>
-				<div class="flex w-full" class:justify-end={isTheSender}>
-					<small class="text-[10px] text-gray-600" class:hidden={isTheSender}
-						>{item.user?.name} &middot;</small
-					>
-					<small class="text-[10px] italic text-gray-500">{fromNow(item.createdAt)}</small>
+
+				<div
+					class="text-sm italic"
+					class:text-indigo-800={isTheSender}
+					class:dark:text-indigo-300={isTheSender}
+					class:text-yellow-500={!isTheSender}
+					class:dark:text-yellow-400={!isTheSender}
+				>
+					{item.user?.name}:
+				</div>
+				<div class="text-sm">
+					{item.message}
 				</div>
 			</li>
 		{/each}

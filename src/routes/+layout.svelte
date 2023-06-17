@@ -14,7 +14,7 @@
 	<title>{siteInfo.siteName}</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-800">
 	<Navbar auth={data.user} />
 
 	<div class="container mt-8">

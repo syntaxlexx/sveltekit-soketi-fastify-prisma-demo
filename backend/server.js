@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import { PrismaClient } from '@prisma/client';
 import fastifyEnv from '@fastify/env';
+import fastifyFormbody from '@fastify/formbody';
 import cors from '@fastify/cors';
 import Pusher from 'pusher';
 import { z, ZodError } from 'zod';
@@ -107,6 +108,7 @@ const envOptions = {
 };
 
 fastify.register(fastifyEnv, envOptions);
+fastify.register(fastifyFormbody);
 
 // register helmet
 fastify.register(
@@ -298,6 +300,32 @@ fastify.post('/message', async (request, reply) => {
 	});
 
 	return { success: true, message };
+});
+
+// pusher authentication
+fastify.post('/pusher/auth', async (request, reply) => {
+	// first verify they are logged in!
+	const accessToken = request.headers[accessTokenHeader];
+	if (!accessToken) {
+		throw formatUnauthenticatedError();
+	}
+	const user = getUserInformation(accessToken);
+	if (!user) {
+		throw formatUnauthenticatedError();
+	}
+
+	// now verify if they are a participant of the room
+	const socketId = request.body.socket_id;
+	const channel = request.body.channel_name;
+
+	console.log('socketId', socketId);
+	console.log('channel', channel);
+	console.log('accessToken', accessToken);
+
+	// authorize person
+	const authResponse = pusher.authorizeChannel(socketId, channel);
+	console.log('authResponse', authResponse);
+	return authResponse;
 });
 
 /**

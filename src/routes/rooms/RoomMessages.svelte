@@ -1,19 +1,26 @@
 <script lang="ts">
-	import type { Message, Room } from '@prisma/client';
+	import type { Message, Room, User } from '@prisma/client';
 	import { onDestroy, onMount } from 'svelte';
-	import { Button, Icon } from '$lib/components';
+	import { Button, DisplayErrors, Icon } from '$lib/components';
 	import { initializePusher, type Pusher } from '$lib/pusher-client';
+	import { getBackendHeaders } from '$lib/constants';
+	import { fromNow } from '$lib/helpers';
+	import MessageInput from './MessageInput.svelte';
+	import { slide } from 'svelte/transition';
+	import { quadOut } from 'svelte/easing';
 
 	export let room: Room;
+	export let user: User | null | undefined;
+	export let accessToken: string | null | undefined;
 
 	let channel;
-	let message = '';
-	let channelName = 'room';
+	let channelName = 'private-room';
 	let eventName = 'new-message';
 	let pusher: Pusher | null;
 	let isConnected = false;
 	let isMounted = false;
 	let isListening = false;
+	let errors = null;
 
 	let messages: Message[] = [];
 
@@ -25,7 +32,7 @@
 			disconnectPusher();
 			isListening = false;
 		}
-		channelName = `room-${room.id}`;
+		channelName = `private-room-${room.id}`;
 
 		if (isMounted && !isListening) startListening();
 	}
@@ -42,7 +49,7 @@
 
 	function startListening() {
 		isListening = true;
-		pusher = initializePusher();
+		pusher = initializePusher(getBackendHeaders(accessToken));
 
 		channel = pusher?.subscribe(channelName);
 
@@ -52,7 +59,6 @@
 
 		// check if the user is subscribed to the above channel
 		channel?.bind('pusher:subscription_succeeded', function (members) {
-			console.log('successfully subscribed!');
 			isConnected = true;
 		});
 
@@ -62,13 +68,11 @@
 
 		pusher?.connection.bind('disconnected', () => {
 			isConnected = false;
-			console.log('disconnected');
 		});
 	}
 
 	async function sendMessage() {
 		let resp = await fetch(`http://localhost:3000/ping`);
-		console.log('resp', resp);
 	}
 
 	function disconnectPusher() {
@@ -91,6 +95,64 @@
 
 <div>Channel: {channelName}</div>
 
-<form on:submit|preventDefault={sendMessage}>
-	<Button type="submit" iconSuffix="send">Send Message</Button>
-</form>
+<div class="relative min-h-[50vh]">
+	<div class="flex flex-wrap justify-between gap-4">
+		<h4 class="subtitle">Public Chatroom</h4>
+		<div class="text-sm" class:text-green-500={isConnected} class:text-red-500={!isConnected}>
+			<Icon name="circle" size="sm" />
+			{#if isConnected}
+				connected
+			{:else}
+				not connected
+			{/if}
+		</div>
+	</div>
+
+	<!-- chat area -->
+	<ul class="relative mt-4">
+		{#each messages as item}
+			{@const isTheSender = user?.id == item.userId}
+			<li class="mb-2">
+				<div class="flex w-full" class:justify-end={isTheSender}>
+					<div
+						class="text-sm px-3 py-2 rounded-lg max-w-[70%]"
+						class:bg-gray-100={isTheSender}
+						class:dark:bg-gray-900={isTheSender}
+						class:bg-blue-100={!isTheSender}
+						class:dark:bg-blue-900={!isTheSender}
+						class:rounded-ee-none={isTheSender}
+						class:rounded-es-none={!isTheSender}
+					>
+						{item.message}
+					</div>
+				</div>
+				<div class="flex w-full" class:justify-end={isTheSender}>
+					<small class="text-[10px] text-gray-600 dark:text-gray-400" class:hidden={isTheSender}
+						>{item.user?.name} &middot;</small
+					>
+					<small class="text-[10px] italic text-gray-500 dark:text-gray-400"
+						>{fromNow(item.createdAt)}</small
+					>
+				</div>
+			</li>
+		{/each}
+	</ul>
+
+	{#if errors}
+		<div
+			class="absolute bottom-[40px] left-0 right-0"
+			transition:slide={{ axis: 'y', duration: 300, easing: quadOut }}
+		>
+			<DisplayErrors {errors} />
+		</div>
+	{/if}
+
+	{#if isMounted}
+		<div
+			class="absolute bottom-0 left-0 right-0"
+			in:slide={{ axis: 'y', duration: 300, easing: quadOut }}
+		>
+			<MessageInput on:send={sendMessage} />
+		</div>
+	{/if}
+</div>
