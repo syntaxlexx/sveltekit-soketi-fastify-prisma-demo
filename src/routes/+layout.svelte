@@ -17,7 +17,7 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-800">
 	<Navbar auth={data.user} />
 
-	<div class="container mt-8">
+	<div class="container mt-8 min-h-[69vh]">
 		<slot />
 	</div>
 

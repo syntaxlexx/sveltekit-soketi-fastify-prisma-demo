@@ -1,5 +1,4 @@
 import prisma from '$lib/prisma';
-import getAllRooms from '$lib/server/getAllRooms';
 import { returnRespError, returnUnauthenticated } from '$lib/server/helpers';
 import type { Actions } from './$types';
 import z from 'zod'

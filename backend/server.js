@@ -180,11 +180,6 @@ fastify.get('/ping', async (request, reply) => {
 });
 
 // CRUD
-fastify.get('/users', async (request, reply) => {
-	const users = await prisma.user.findMany();
-	return { data: users };
-});
-
 fastify.get('/public-latest-messages', async (request, reply) => {
 	const data = await prisma.message.findMany({
 		include: {
