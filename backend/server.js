@@ -320,9 +320,16 @@ fastify.post('/message', async (request, reply) => {
 		}
 	});
 
-	pusher.trigger(`private-room-${room.id}`, 'new-message', {
-		message
-	});
+	// alert subs
+	if (room.isGroup) {
+		pusher.trigger(`presence-room-${room.id}`, 'new-message', {
+			message
+		});
+	} else {
+		pusher.trigger(`private-room-${room.id}`, 'new-message', {
+			message
+		});
+	}
 
 	return { success: true, message };
 });
@@ -365,9 +372,6 @@ fastify.post('/pusher/auth', async (request, reply) => {
 	const socketId = request.body.socket_id;
 	const channel = request.body.channel_name;
 
-	// authorize person
-	const authResponse = pusher.authorizeChannel(socketId, channel);
-
 	if (channel.startsWith('private-room')) {
 		try {
 			const roomId = Number(channel.split('-').pop());
@@ -378,7 +382,37 @@ fastify.post('/pusher/auth', async (request, reply) => {
 				}
 			});
 
-			if (roomUser) return authResponse;
+			if (roomUser) {
+				const authResponse = pusher.authorizeChannel(socketId, channel);
+				return authResponse;
+			}
+		} catch (error) {
+			return false;
+		}
+	}
+
+	if (channel.startsWith('presence-room')) {
+		try {
+			const roomId = Number(channel.split('-').pop());
+			const roomUser = await prisma.roomUser.findFirst({
+				where: {
+					userId: user.id,
+					roomId: roomId
+				}
+			});
+
+			if (roomUser) {
+				const presenceData = {
+					user_id: user.id,
+					user_info: {
+						name: user.name,
+						id: user.id
+					}
+				};
+
+				const authResponse = pusher.authorizeChannel(socketId, channel, presenceData);
+				return authResponse;
+			}
 		} catch (error) {
 			return false;
 		}

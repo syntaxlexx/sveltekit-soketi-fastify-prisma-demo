@@ -3,9 +3,10 @@
 	import { openModal } from 'svelte-modals';
 	import Modal from './Modal.svelte';
 	import type { Room } from '@prisma/client';
-	import RoomMessages from './RoomMessages.svelte';
+	import PresenceRoomMessages from './PresenceRoomMessages.svelte';
 	import PublicRoomMessages from './PublicRoomMessages.svelte';
 	import { invalidateAll } from '$app/navigation';
+	import PrivateRoomMessages from './PrivateRoomMessages.svelte';
 
 	export let data;
 
@@ -62,6 +63,9 @@
 					<div class="flex items-center gap-1">
 						<div class="text-gray-500">{i + 1}.</div>
 						<div class="text-lg">{item.name}</div>
+						{#if item.isGroup}
+							<div class="text-xs italic rounded px-2 py-0.5 bg-gray-500 ml-3">Group</div>
+						{/if}
 					</div>
 					<div class="text-gray-400 dark:text-gray-600">
 						<div class="icon">
@@ -80,14 +84,20 @@
 				<Button icon="chat" on:click={publicRoom}>Go to Public Chatroom</Button>
 			</div>
 
-			<div class="card">
+			<div class="">
 				{#if showPublicRoom}
 					<PublicRoomMessages {accessToken} {user} />
 				{:else if selectedRoom}
-					<RoomMessages room={selectedRoom} {accessToken} {user} />
+					{#if selectedRoom.isGroup}
+						<PresenceRoomMessages room={selectedRoom} {accessToken} {user} />
+					{:else}
+						<PrivateRoomMessages room={selectedRoom} {accessToken} {user} />
+					{/if}
 				{:else}
-					<div class="h-[50vh] w-full flex items-center justify-center">
-						<p>Select a room to proceed</p>
+					<div class="card">
+						<div class="h-[50vh] w-full flex items-center justify-center">
+							<p>Select a room to proceed</p>
+						</div>
 					</div>
 				{/if}
 			</div>

@@ -34,6 +34,17 @@
 	<svelte:fragment slot="title">Create a New Room</svelte:fragment>
 	<form method="POST" action="?/create" on:submit|preventDefault={handleSubmit}>
 		<Input name="name" type="text" required />
+		<div class="flex items-center mb-2">
+			<input
+				id="is_group"
+				type="checkbox"
+				name="is_group"
+				class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+			/>
+			<label for="is_group" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+				>Is Group?</label
+			>
+		</div>
 		<div class="actions">
 			<Button type="submit" iconSuffix="forward">Create</Button>
 		</div>

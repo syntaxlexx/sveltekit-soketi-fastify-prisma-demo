@@ -28,7 +28,7 @@ div, p {
 	pointer-events: none;
 }
 .modal .contents {
-	@apply min-w-[250px] lg:min-w-[500px] xl:min-w-[800px] rounded-lg px-8 py-6 bg-white flex flex-col justify-between ;
+	@apply min-w-[250px] lg:min-w-[500px] xl:min-w-[800px] rounded-lg px-8 py-6 bg-white dark:bg-gray-800 flex flex-col justify-between ;
 	pointer-events: auto;
 }
 .modal .body {

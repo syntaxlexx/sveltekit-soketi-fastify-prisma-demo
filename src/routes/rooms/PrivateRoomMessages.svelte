@@ -40,7 +40,11 @@
 			disconnectPusher();
 			isListening = false;
 		}
-		channelName = `private-room-${room.id}`;
+		if (room.isGroup) {
+			channelName = `presence-room-${room.id}`;
+		} else {
+			channelName = `private-room-${room.id}`;
+		}
 
 		if (isMounted && !isListening) startListening();
 	}
@@ -114,64 +118,69 @@
 	}
 </script>
 
-<div class="relative min-h-[50vh]">
-	<div class="flex flex-wrap justify-between gap-4">
-		<h4 class="subtitle">{room.name}</h4>
-		<div class="text-sm" class:text-green-500={isConnected} class:text-red-500={!isConnected}>
-			<Icon name="circle" size="sm" />
-			{#if isConnected}
-				connected
-			{:else}
-				not connected
-			{/if}
+<div class="card">
+	<div class="relative min-h-[50vh]">
+		<div class="flex flex-wrap justify-between gap-4">
+			<h4 class="subtitle">
+				{room.name}
+				<span class="text-xs italic rounded px-2 py-0.5 bg-gray-500 ml-3">Private</span>
+			</h4>
+			<div class="text-sm" class:text-green-500={isConnected} class:text-red-500={!isConnected}>
+				<Icon name="circle" size="sm" />
+				{#if isConnected}
+					connected
+				{:else}
+					not connected
+				{/if}
+			</div>
 		</div>
-	</div>
 
-	<!-- chat area -->
-	<ul class="relative mt-4">
-		{#each messages as item}
-			{@const isTheSender = user?.id == item.userId}
-			<li class="mb-2">
-				<div class="flex w-full" class:justify-end={isTheSender}>
-					<div
-						class="text-sm px-3 py-2 rounded-lg max-w-[70%]"
-						class:bg-gray-100={isTheSender}
-						class:dark:bg-gray-900={isTheSender}
-						class:bg-blue-100={!isTheSender}
-						class:dark:bg-blue-900={!isTheSender}
-						class:rounded-ee-none={isTheSender}
-						class:rounded-es-none={!isTheSender}
-					>
-						{item.message}
+		<!-- chat area -->
+		<ul class="relative mt-4">
+			{#each messages as item}
+				{@const isTheSender = user?.id == item.userId}
+				<li class="mb-2">
+					<div class="flex w-full" class:justify-end={isTheSender}>
+						<div
+							class="text-sm px-3 py-2 rounded-lg max-w-[70%]"
+							class:bg-gray-100={isTheSender}
+							class:dark:bg-gray-900={isTheSender}
+							class:bg-blue-100={!isTheSender}
+							class:dark:bg-blue-900={!isTheSender}
+							class:rounded-ee-none={isTheSender}
+							class:rounded-es-none={!isTheSender}
+						>
+							{item.message}
+						</div>
 					</div>
-				</div>
-				<div class="flex w-full" class:justify-end={isTheSender}>
-					<small class="text-[10px] text-gray-600 dark:text-gray-400" class:hidden={isTheSender}
-						>{item.user?.name} &middot;</small
-					>
-					<small class="text-[10px] italic text-gray-500 dark:text-gray-400"
-						>{fromNow(item.createdAt)}</small
-					>
-				</div>
-			</li>
-		{/each}
-	</ul>
+					<div class="flex w-full" class:justify-end={isTheSender}>
+						<small class="text-[10px] text-gray-600 dark:text-gray-400" class:hidden={isTheSender}
+							>{item.user?.name} &middot;</small
+						>
+						<small class="text-[10px] italic text-gray-500 dark:text-gray-400"
+							>{fromNow(item.createdAt)}</small
+						>
+					</div>
+				</li>
+			{/each}
+		</ul>
 
-	{#if errors}
-		<div
-			class="absolute bottom-[40px] left-0 right-0"
-			transition:slide={{ axis: 'y', duration: 300, easing: quadOut }}
-		>
-			<DisplayErrors {errors} />
-		</div>
-	{/if}
+		{#if errors}
+			<div
+				class="absolute bottom-[40px] left-0 right-0"
+				transition:slide={{ axis: 'y', duration: 300, easing: quadOut }}
+			>
+				<DisplayErrors {errors} />
+			</div>
+		{/if}
 
-	{#if isMounted}
-		<div
-			class="absolute bottom-0 left-0 right-0"
-			in:slide={{ axis: 'y', duration: 300, easing: quadOut }}
-		>
-			<MessageInput on:send={sendMessage} />
-		</div>
-	{/if}
+		{#if isMounted}
+			<div
+				class="absolute bottom-0 left-0 right-0"
+				in:slide={{ axis: 'y', duration: 300, easing: quadOut }}
+			>
+				<MessageInput on:send={sendMessage} />
+			</div>
+		{/if}
+	</div>
 </div>

@@ -26,6 +26,11 @@ export const convertToJson = (data: object | Array<any>) => {
     return JSON.parse(JSON.stringify(data));
 };
 
+export const listify = (obj, mapFn) =>
+    Object.entries(obj).reduce((acc, [key, value]) => {
+        acc.push(mapFn(key, value));
+        return acc;
+    }, []);
 
 /**
  * throw validation error from zod

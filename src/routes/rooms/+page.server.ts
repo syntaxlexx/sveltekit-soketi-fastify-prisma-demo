@@ -35,6 +35,7 @@ export const actions = {
 
         const validated = z.object({
             name: z.string().trim().min(3).max(40),
+            is_group: z.coerce.boolean().nullable()
         }).safeParse(data)
 
         if (!validated.success) {
@@ -46,6 +47,7 @@ export const actions = {
                 data: {
                     name: validated.data.name,
                     userId: user.id,
+                    isGroup: Boolean(validated.data.is_group),
                 }
             });
 
