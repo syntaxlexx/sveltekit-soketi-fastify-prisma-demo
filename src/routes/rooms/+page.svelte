@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Empty, Icon } from '$lib/components';
+	import { Button, Empty, Icon, Seo } from '$lib/components';
 	import { openModal } from 'svelte-modals';
 	import Modal from './Modal.svelte';
 	import type { Room } from '@prisma/client';
@@ -43,6 +43,8 @@
 		await invalidateAll();
 	}
 </script>
+
+<Seo title="Rooms" />
 
 {#if isMounted}
 	<div in:fade={{ duration: 300, easing: quadOut }}>

@@ -97,7 +97,7 @@ You can preview the production build with `npm run preview`.
 - Human Brain
 
 ## Todo
-- [ ] Add Emojis
+- [x] Add Emojis
 - [ ] Add file uploads
 - [ ] Add Video chat (WebRTC)
 - [ ] Invite links to private chats

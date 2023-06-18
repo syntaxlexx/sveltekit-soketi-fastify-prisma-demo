@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Seo } from '$lib/components';
 	import StatsTable from '$lib/components/StatsTable.svelte';
 	import { dateFormat, fromNow } from '$lib/helpers.js';
 	import { onMount } from 'svelte';
@@ -24,6 +25,8 @@
 		return users.find((e) => e.id == userId);
 	}
 </script>
+
+<Seo title="Admin" />
 
 {#if isMounted}
 	<div in:fade={{ duration: 300, easing: quadOut }}>

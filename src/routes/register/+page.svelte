@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, deserialize, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import { Button, DisplayErrors, Icon, Input } from '$lib/components';
+	import { Button, DisplayErrors, Icon, Input, Seo } from '$lib/components';
 	import type { PageData, ActionData } from './$types';
 	import type { ActionResult } from '@sveltejs/kit';
 
@@ -26,6 +26,8 @@
 		applyAction(result);
 	}
 </script>
+
+<Seo title="Register Now" />
 
 <div class="flex flex-col items-center mt-8">
 	<div class="card">

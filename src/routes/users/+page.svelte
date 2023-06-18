@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Icon } from '$lib/components';
+	import Seo from '$lib/components/Seo.svelte';
 	import { fromNow } from '$lib/helpers';
 	import { onMount } from 'svelte';
 	import { quadOut } from 'svelte/easing';
@@ -18,9 +19,11 @@
 	const headers = ['ID', 'Name', 'Email', 'Joined', 'Messages Sent ', 'Actions'];
 </script>
 
-<h2 class="title">Users</h2>
+<Seo title="Users" />
 
 {#if isMounted}
+	<h2 class="title">Users</h2>
+
 	<div in:fade={{ duration: 300, easing: quadOut }}>
 		<div class="relative overflow-x-auto mt-5">
 			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

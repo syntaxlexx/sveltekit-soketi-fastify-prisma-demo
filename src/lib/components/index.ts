@@ -7,6 +7,7 @@ import Alert from "./Alert.svelte"
 import DisplayErrors from "./DisplayErrors.svelte"
 import StatsTable from "./StatsTable.svelte"
 import Emoji from "./Emoji.svelte"
+import Seo from "./Seo.svelte"
 
 export {
     Empty,
@@ -18,4 +19,5 @@ export {
     DisplayErrors,
     StatsTable,
     Emoji,
+    Seo,
 }
