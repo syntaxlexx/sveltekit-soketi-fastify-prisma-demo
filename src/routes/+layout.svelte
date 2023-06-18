@@ -8,6 +8,8 @@
 	import { siteInfo } from '$lib/constants';
 
 	export let data;
+
+	$: user = data.user;
 </script>
 
 <svelte:head>
@@ -15,7 +17,7 @@
 </svelte:head>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-800">
-	<Navbar auth={data.user} />
+	<Navbar auth={user} />
 
 	<div class="container mt-8 min-h-[69vh]">
 		<slot />
