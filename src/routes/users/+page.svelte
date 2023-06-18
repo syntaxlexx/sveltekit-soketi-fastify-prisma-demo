@@ -3,7 +3,7 @@
 	import { fromNow } from '$lib/helpers';
 	import { onMount } from 'svelte';
 	import { quadOut } from 'svelte/easing';
-	import { slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	let isMounted = false;
 
@@ -21,7 +21,7 @@
 <h2 class="title">Users</h2>
 
 {#if isMounted}
-	<div in:slide={{ axis: 'y', duration: 300, easing: quadOut }}>
+	<div in:fade={{ duration: 300, easing: quadOut }}>
 		<div class="relative overflow-x-auto mt-5">
 			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 				<thead

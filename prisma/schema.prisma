@@ -32,9 +32,9 @@ model Room {
   updatedAt DateTime @updatedAt
   isGroup   Boolean  @default(false)
 
-  user     User       @relation(fields: [userId], references: [id])
-  messages Message[]
-  RoomUser RoomUser[]
+  user      User       @relation(fields: [userId], references: [id])
+  messages  Message[]
+  roomUsers RoomUser[]
 }
 
 // a user can belong to one or more rooms, 
