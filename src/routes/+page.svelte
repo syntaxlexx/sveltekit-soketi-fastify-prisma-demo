@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Marquee from 'svelte-fast-marquee';
+
 	let email: string | null = null;
 
 	function handleSubmit() {
@@ -8,6 +10,21 @@
 
 		window.open(`mailto:${to}?subject=${subject}&body=${body}&from=${email}`);
 	}
+
+	const technologies = [
+		'Sveltekit',
+		'Docker',
+		'Soketi',
+		'Pusher SDK',
+		'Fastify',
+		'TailwindCSS',
+		'Prisma',
+		'jsonwebtokens',
+		'dayjs',
+		'zod',
+		'typescript',
+		'pnpm'
+	];
 </script>
 
 <section class="relative">
@@ -36,7 +53,7 @@
 		<h1
 			class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
 		>
-			Sveltekit, Soketi (Pusher version), and Fastify
+			Sveltekit, Soketi (w/ Pusher SDK), and Fastify
 		</h1>
 		<p
 			class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-36 dark:text-gray-200"
@@ -81,6 +98,19 @@
 		</form>
 		<div class="italic text-sm text-gray-500 dark:text-gray-400 mt-1">
 			* This is <strong>not</strong> a Newsletter
+		</div>
+
+		<div class="mt-5">
+			<h4 class="mb-2 text-gray-500 dark:text-gray-400">- Technologies -</h4>
+			<Marquee speed={20}>
+				{#each technologies as item}
+					<div
+						class="rounded bg-gray-200 dark:bg-gray-700 border-gray-400 dark:border-gray-500 px-3 py-1 text-sm mr-2"
+					>
+						{item}
+					</div>
+				{/each}
+			</Marquee>
 		</div>
 	</div>
 

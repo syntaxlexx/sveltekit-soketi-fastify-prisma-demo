@@ -42,10 +42,12 @@ docker run -p 6001:6001 -p 9601:9601 quay.io/soketi/soketi:1.4-16-debian
 
 
 ## After-thoughts
-The nature of `Pub/Sub` is really not feasible for medium-to-large scale apps as compared to `Bidirectional Streaming`. The authentication mechanism is not really feasible. 
-That is why **Soketi** is mostly advertised and/or used with Laravel, since it is ... PHP.
+The nature of `Pub/Sub` is really not bad for small-to-medium scale apps as compared to `Bidirectional Streaming`. For faster authentication of websocket, short-lived JsonWebTokens are a perfect and fast authentication mechanism. 
+**Soketi** is mostly advertised and/or used with Laravel, but has been proven to work with other projects. It is **INSANELY** fast when you test on your own.
 
-For true live-chats, it would be better sticking to **bidirectional** Websockets, [As explained here](), [and here](https://stackoverflow.com/questions/53689633/can-google-pub-sub-be-used-for-chat-messaging), [and this too.](https://stackoverflow.com/questions/71746954/pub-sub-vs-bidirectional-streaming-in-grpc-for-chat-service)
+However, for truly fast-paced live-chats, it would be better sticking to **bidirectional** Websockets, [As explained here](https://stackoverflow.com/questions/53689633/can-google-pub-sub-be-used-for-chat-messaging), [and this too.](https://stackoverflow.com/questions/71746954/pub-sub-vs-bidirectional-streaming-in-grpc-for-chat-service)
+
+.. or use a service such as **Alby**!
 
 ## The Normal, Boring Docs
 > Boring is good

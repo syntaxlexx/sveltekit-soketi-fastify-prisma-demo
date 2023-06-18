@@ -48,6 +48,7 @@
 		"pusher": "^5.1.3",
 		"pusher-js": "^8.1.0",
 		"string-hash": "^1.1.3",
+		"svelte-fast-marquee": "^0.4.1",
 		"svelte-legos": "^0.2.1",
 		"svelte-modals": "^1.2.1",
 		"zod": "^3.21.4"
