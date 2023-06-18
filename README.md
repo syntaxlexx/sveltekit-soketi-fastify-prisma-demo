@@ -6,9 +6,11 @@ A sample and kinda-unique Chat App build after peer-pressure from [Twitter](http
 - `Sveltekit` performs arguably better than `React`,`Next`,`Nuxt`,`Jquery` (huh?!) with better syntax
 - `Twitter` is better than `Masterdon`
 
-And oh-boy! Do I have a 2016 Pc that barely notices the first 3 claims! 
+And oh-boy! Do I also have a 2016 Pc that barely notices the first 3 claims! 
 > You're sure your new M1 MBP will notice it? 
 As for React ....... they ain't lying!
+
+![Screenshot 1](static/screenshot-1.png)
 
 ## Quick Docs
 ### Node Server
@@ -88,3 +90,24 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 
+
+## Credits
+- (AceLords)(https://acelords.com)
+- (SyntaxLexx)(https://twitter.com/syntaxlexx)
+- Human Brain
+
+## Todo
+- [ ] Invite links to private chats
+- [ ] Hide private chats from non-members (participants)
+- [ ] Add limitations to chat rooms, e.g. max_members
+- [ ] Group admins can add and remove members
+- [ ] Chat creators can delete chat-rooms
+- [ ] Join private and group chats via QR code
+- [ ] Join private and group chats via PIN/code
+- [ ] Join private and group chats via Email
+
+## Screenshots
+![Screenshot 2](static/screenshot-2.png)
+![Screenshot 3](static/screenshot-3.png)
+![Screenshot 4](static/screenshot-4.png)
+![Screenshot 5](static/screenshot-5.png)
