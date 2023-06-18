@@ -97,6 +97,9 @@ You can preview the production build with `npm run preview`.
 - Human Brain
 
 ## Todo
+- [ ] Add Emojis
+- [ ] Add file uploads
+- [ ] Add Video chat (WebRTC)
 - [ ] Invite links to private chats
 - [ ] Hide private chats from non-members (participants)
 - [ ] Add limitations to chat rooms, e.g. max_members

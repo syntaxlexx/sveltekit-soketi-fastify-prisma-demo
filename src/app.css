@@ -16,7 +16,7 @@ p {
 }
 
 .card {
-	@apply min-h-[50vh] bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-500 px-8 py-5;
+	@apply bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-500 px-8 py-5;
 }
 
 /* ========== Modal styling == */

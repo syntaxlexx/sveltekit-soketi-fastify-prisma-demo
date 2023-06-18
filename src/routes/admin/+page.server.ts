@@ -49,6 +49,7 @@ export const load: PageServerLoad = async ({ locals }) => {
         rooms,
         messages,
         users,
+        user: locals.user
     };
 
 };

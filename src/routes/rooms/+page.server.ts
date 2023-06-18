@@ -4,7 +4,6 @@ import type { Actions } from './$types';
 import z from 'zod'
 
 export async function load({ cookies }) {
-
     const rooms = await prisma.room.findMany({
         where: {
             name: {
