@@ -13,6 +13,9 @@ dependencies:
   '@fastify/helmet':
     specifier: ^10.1.1
     version: 10.1.1
+  '@picmo/popup-picker':
+    specifier: ^5.8.4
+    version: 5.8.4(picmo@5.8.4)
   '@prisma/client':
     specifier: 4.15.0
     version: 4.15.0(prisma@4.15.0)
@@ -404,6 +407,16 @@ packages:
       helmet: 6.2.0
     dev: false
 
+  /@floating-ui/core@1.3.1:
+    resolution: {integrity: sha512-Bu+AMaXNjrpjh41znzHqaz3r2Nr8hHuHZT6V2LBKMhyMl0FgKA62PNYbqnfgmzOhoWZj70Zecisbo4H1rotP5g==}
+    dev: false
+
+  /@floating-ui/dom@1.4.1:
+    resolution: {integrity: sha512-loCXUOLzIC3jp50RFOKXZ/kQjjz26ryr/23M+FWG9jrmAv8lRf3DUfC2AiVZ3+K316GOhB08CR+Povwz8e9mDw==}
+    dependencies:
+      '@floating-ui/core': 1.3.1
+    dev: false
+
   /@humanwhocodes/config-array@0.11.10:
     resolution: {integrity: sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==}
     engines: {node: '>=10.10.0'}
@@ -478,6 +491,15 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
+
+  /@picmo/popup-picker@5.8.4(picmo@5.8.4):
+    resolution: {integrity: sha512-A3ns6+vpXU0lTRUCFe2NnIfXhl0omsmTig0Kr5/3nZvZVr/uscM2Yyw4wFwFaWFQNMa6zL5Vfo8sUMfDBxs/9g==}
+    peerDependencies:
+      picmo: ^5.8.0
+    dependencies:
+      '@floating-ui/dom': 1.4.1
+      picmo: 5.8.4
+    dev: false
 
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
@@ -1199,6 +1221,10 @@ packages:
   /electron-to-chromium@1.4.430:
     resolution: {integrity: sha512-FytjTbGwz///F+ToZ5XSeXbbSaXalsVRXsz2mHityI5gfxft7ieW3HqFLkU5V1aIrY42aflICqbmFoDxW10etg==}
     dev: true
+
+  /emojibase@6.1.0:
+    resolution: {integrity: sha512-1GkKJPXP6tVkYJHOBSJHoGOr/6uaDxZ9xJ6H7m6PfdGXTmQgbALHLWaVRY4Gi/qf5x/gT/NUXLPuSHYLqtLtrQ==}
+    dev: false
 
   /env-schema@5.2.0:
     resolution: {integrity: sha512-36/6cZ+zIbcPA2ANrzp7vTz2bS8/zdZaq2RPFqJVtCGJ4P55EakgJ1BeKP8RMvEmM7ndrnHdJXzL3J1dHrEm1w==}
@@ -2108,6 +2134,12 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
     dev: true
+
+  /picmo@5.8.4:
+    resolution: {integrity: sha512-QrHBRXkNMqNYAB533a6UKXwdj4UYFb78zq3CIIdyUMXj3k4wOt8ZUfoty9aj4C6rewwNdmuti6U5YyDjJ6tkmw==}
+    dependencies:
+      emojibase: 6.1.0
+    dev: false
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}

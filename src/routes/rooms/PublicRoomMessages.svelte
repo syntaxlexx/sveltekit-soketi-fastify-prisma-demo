@@ -102,7 +102,7 @@
 </script>
 
 <div class="card">
-	<div class="relative h-[50vh] overflow-auto">
+	<div class="relative h-[50vh]">
 		<div class="flex flex-wrap justify-between gap-4">
 			<h4 class="subtitle">Public Chatroom</h4>
 			<div class="text-sm" class:text-green-500={isConnected} class:text-red-500={!isConnected}>

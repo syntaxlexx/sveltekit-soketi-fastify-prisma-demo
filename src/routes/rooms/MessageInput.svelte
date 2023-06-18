@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { Emoji } from '$lib/components';
 	import { createEventDispatcher } from 'svelte';
+	import type { EmojiSelection } from '$lib/types';
 
 	export let placeholder = 'Your message';
 	export let label = 'Send a message';
@@ -17,9 +19,13 @@
 	function handleTyping() {
 		dispatchTyping('typing');
 	}
+
+	function onEmoji(event: CustomEvent<EmojiSelection>) {
+		model += event.detail.emoji;
+	}
 </script>
 
-<form on:submit|preventDefault={handleSubmit} autocomplete="off">
+<form on:submit|preventDefault={handleSubmit} autocomplete="off" class="relative">
 	<label for={name} class="sr-only">{label}</label>
 	<div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-600">
 		<button
@@ -40,24 +46,27 @@
 			>
 			<span class="sr-only">Upload image</span>
 		</button>
-		<button
-			type="button"
-			class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
-		>
-			<svg
-				aria-hidden="true"
-				class="w-6 h-6"
-				fill="currentColor"
-				viewBox="0 0 20 20"
-				xmlns="http://www.w3.org/2000/svg"
-				><path
-					fill-rule="evenodd"
-					d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
-					clip-rule="evenodd"
-				/></svg
+
+		<Emoji on:select={onEmoji} autoClose={false}>
+			<div
+				class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
 			>
-			<span class="sr-only">Add emoji</span>
-		</button>
+				<svg
+					aria-hidden="true"
+					class="w-6 h-6"
+					fill="currentColor"
+					viewBox="0 0 20 20"
+					xmlns="http://www.w3.org/2000/svg"
+					><path
+						fill-rule="evenodd"
+						d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
+						clip-rule="evenodd"
+					/></svg
+				>
+				<span class="sr-only">Add emoji</span>
+			</div>
+		</Emoji>
+
 		<input
 			id={name}
 			class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

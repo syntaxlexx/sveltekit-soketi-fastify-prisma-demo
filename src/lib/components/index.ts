@@ -6,6 +6,7 @@ import Input from "./Input.svelte"
 import Alert from "./Alert.svelte"
 import DisplayErrors from "./DisplayErrors.svelte"
 import StatsTable from "./StatsTable.svelte"
+import Emoji from "./Emoji.svelte"
 
 export {
     Empty,
@@ -16,4 +17,5 @@ export {
     Alert,
     DisplayErrors,
     StatsTable,
+    Emoji,
 }

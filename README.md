@@ -111,6 +111,7 @@ You can preview the production build with `npm run preview`.
 
 ## Screenshots
 ![Screenshot 2](static/screenshot-2.png)
+![Screenshot 6](static/screenshot-6.png)
 ![Screenshot 3](static/screenshot-3.png)
 ![Screenshot 4](static/screenshot-4.png)
 ![Screenshot 5](static/screenshot-5.png)
