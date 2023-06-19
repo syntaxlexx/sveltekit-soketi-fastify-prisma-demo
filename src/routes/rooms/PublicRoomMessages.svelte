@@ -99,6 +99,8 @@
 
 		return dateFormat(d, 'DD MMM, hh:mm a');
 	}
+
+	function startVideo() {}
 </script>
 
 <div class="card">
@@ -154,7 +156,7 @@
 				class="absolute bottom-0 left-0 right-0"
 				in:slide={{ axis: 'y', duration: 300, easing: quadOut }}
 			>
-				<MessageInput on:send={sendMessage} />
+				<MessageInput on:send={sendMessage} on:video={startVideo} />
 			</div>
 		{/if}
 	</div>

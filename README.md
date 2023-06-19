@@ -37,7 +37,7 @@ docker run -p 6001:6001 -p 9601:9601 quay.io/soketi/soketi:1.4-16-debian
 ```
 
 
-## In-Thought & Architecture
+## In-Thoughts & Architecture
 - **Sveltekit** handles the authentication/authorization in the SPA/SSR-side-of-life. 
 - **Fastify(Node**) handles the API-side, that is the websockets/pusher side-of-life. To prevent multiple/redundant authentications, we pass the `cookie` from Sveltekit as an `access_token` header when sending messages to the **node backend**. 
 - Arguably, the entire `SSR` can be made an `SPA` by just issuing `JWT tokens / access_tokens` from the **node backend**. I just prefer keeping the **node backend** light on its duties, and let **Sveltekit** do what its best at: *everything else!*.
@@ -47,9 +47,9 @@ docker run -p 6001:6001 -p 9601:9601 quay.io/soketi/soketi:1.4-16-debian
 The nature of `Pub/Sub` is really not bad for small-to-medium scale apps as compared to `Bidirectional Streaming`. For faster authentication of websocket, short-lived JsonWebTokens are a perfect and fast authentication mechanism. 
 **Soketi** is mostly advertised and/or used with Laravel, but has been proven to work with other projects. It is **INSANELY** fast when you test on your own.
 
-However, for truly fast-paced live-chats, it would be better sticking to **bidirectional** Websockets, [As explained here](https://stackoverflow.com/questions/53689633/can-google-pub-sub-be-used-for-chat-messaging), [and this too.](https://stackoverflow.com/questions/71746954/pub-sub-vs-bidirectional-streaming-in-grpc-for-chat-service)
+However, for truly fast-paced live-chats, it would be better sticking to **bidirectional** Websockets, [As explained here](https://stackoverflow.com/questions/53689633/can-google-pub-sub-be-used-for-chat-messaging), [and here](https://ably.com/topic/pusher-vs-websockets), [and this too.](https://stackoverflow.com/questions/71746954/pub-sub-vs-bidirectional-streaming-in-grpc-for-chat-service)
 
-.. or use a service such as **Alby**!
+.. or use a service such as [**Ably**](https://ably.com/)!
 
 ## The Normal, Boring Docs
 > Boring is good
