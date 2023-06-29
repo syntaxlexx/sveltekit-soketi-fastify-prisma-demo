@@ -15,6 +15,10 @@
 			route: '/'
 		},
 		{
+			title: 'Images',
+			route: '/images'
+		},
+		{
 			title: 'Rooms',
 			route: '/rooms'
 		},

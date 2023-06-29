@@ -36,6 +36,18 @@ Install using Docker. Honestly, why would you not use docker?!
 docker run -p 6001:6001 -p 9601:9601 quay.io/soketi/soketi:1.4-16-debian
 ```
 
+### S3 Uploads
+For testing s3 uploads without necessarily creating an AWS account, here we use the [s3rver](https://github.com/jamhall/s3rver) testing library. Simply run 
+
+```bash
+node backend/s3.js
+```
+
+All files are stored in the `./tmp/s3-test` folder.
+
+When deploying, you can use cheaper or self-hosted options that support **S3-compatible** API, e.g. [minio](https://github.com/minio/minio)
+
+
 
 ## In-Thoughts & Architecture
 - **Sveltekit** handles the authentication/authorization in the SPA/SSR-side-of-life. 
@@ -98,7 +110,7 @@ You can preview the production build with `npm run preview`.
 
 ## Todo
 - [x] Add Emojis
-- [ ] Add file uploads
+- [ ] Add file and image uploads
 - [ ] Add Video chat (WebRTC)
 - [ ] Invite links to private chats
 - [ ] Hide private chats from non-members (participants)
